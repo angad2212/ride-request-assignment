@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// ========================
 //  Structs and Classes
-// ========================
 
 // Represents a point/location (x, y)
 struct Point {
@@ -38,9 +36,7 @@ struct RideRequest {
         : rider(rider), scheduledTime(scheduledTime) {}
 };
 
-// ========================
 //  Helper Functions
-// ========================
 
 // Calculate Euclidean distance between two points
 double calculateDistance(Point a, Point b) {
@@ -49,8 +45,8 @@ double calculateDistance(Point a, Point b) {
 
 // Calculate fare given distance
 double calculateFare(double distance) {
-    const double baseFare = 50.0;      // Base Fare
-    const double farePerKm = 10.0;      // Fare per km
+    const double baseFare = 50.0; // Base Fare
+    const double farePerKm = 10.0; // Fare per km
     return baseFare + (farePerKm * distance);
 }
 
@@ -60,9 +56,7 @@ double calculateETA(double distance, double speed) {
     return distance / speed; // returns time in hours
 }
 
-// ========================
 //  Main Ride System Class
-// ========================
 
 class RideSystem {
 private:
@@ -169,9 +163,7 @@ public:
     }
 };
 
-// ========================
 //  Main Simulation
-// ========================
 
 int main() {
     RideSystem system;

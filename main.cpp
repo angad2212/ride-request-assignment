@@ -91,32 +91,31 @@ public:
     }
 
     // Assign the nearest driver to a rider
-    // Assign the nearest driver to a rider
-  Driver findNearestDriver(Rider rider) {
-    if (drivers.empty()) {
-        throw runtime_error("No drivers available!");
+    Driver findNearestDriver(Rider rider) {
+      if (drivers.empty()) {
+          throw runtime_error("No drivers available!");
+      }
+
+      // Min-Heap based on distance
+      priority_queue<pair<double, int>, vector<pair<double, int>>, greater<pair<double, int>>> pq;
+
+      for (auto& driver : drivers) {
+          double dist = calculateDistance(driver.location, rider.location);
+          pq.push({dist, driver.id});
+      }
+
+      int nearestDriverId = pq.top().second;
+
+      // Find and return the driver object
+      for (auto& driver : drivers) {
+          if (driver.id == nearestDriverId) {
+              return driver;
+          }
+      }
+
+      // If somehow not found (should not happen)
+      throw runtime_error("Nearest driver not found!");
     }
-
-    // Min-Heap based on distance
-    priority_queue<pair<double, int>, vector<pair<double, int>>, greater<pair<double, int>>> pq;
-
-    for (auto& driver : drivers) {
-        double dist = calculateDistance(driver.location, rider.location);
-        pq.push({dist, driver.id});
-    }
-
-    int nearestDriverId = pq.top().second;
-
-    // Find and return the driver object
-    for (auto& driver : drivers) {
-        if (driver.id == nearestDriverId) {
-            return driver;
-        }
-    }
-
-    // If somehow not found (should not happen)
-    throw runtime_error("Nearest driver not found!");
-  }
 
 
     // Handle immediate ride request (assign driver, calculate fare and ETA)
@@ -130,7 +129,7 @@ public:
 
             cout << "Assigned Driver ID: " << nearestDriver.id << "\n";
             cout << "Distance to Rider: " << distance << " km\n";
-            cout << "Estimated Fare: ₹" << fare << "\n";
+            cout << "Estimated Fare: $" << fare << "\n";
             cout << "Estimated Time of Arrival: " << etaMinutes << " minutes\n";
 
             // Update driver location to rider location after assignment (simulating pickup)
@@ -169,16 +168,16 @@ int main() {
     RideSystem system;
 
     // Adding some drivers
-    system.addDriver(Driver(1, Point(0, 0), 40)); // Driver 1 at (0, 0)
-    system.addDriver(Driver(2, Point(5, 5), 50)); // Driver 2 at (5,5)
-    system.addDriver(Driver(3, Point(10, -3), 60)); // Driver 3 at (10,-3)
+    system.addDriver(Driver(1, Point(0, 0), 40)); // Driver 1 at (0, 0) with speed 40
+    system.addDriver(Driver(2, Point(5, 5), 50)); // Driver 2 at (5,5) with speed 50
+    system.addDriver(Driver(3, Point(10, -3), 60)); // Driver 3 at (10,-3) with speed 60
 
     // Simulate Driver Routes
     system.addRouteToDriver(1, {Point(0,0), Point(2,2), Point(4,4)});
     system.addRouteToDriver(2, {Point(5,5), Point(6,7)});
     
     // Adding a rider
-    Rider rider1(1001, Point(1, 1));
+    Rider rider1(1001, Point(1, 1)); // Rider id 1001
 
     cout << "\n--- Immediate Ride Request ---\n";
     system.assignRide(rider1);

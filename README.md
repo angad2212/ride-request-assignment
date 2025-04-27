@@ -13,7 +13,7 @@ A streamlined C++ project simulating a ride-hailing service, focusing on efficie
 ## 💻 Technologies Used
 
 * **Language:** C++
-* **Data Structures:** `std::vector`, `vector`, `queue`, `priority_queue`, `unordered_map`
+* **Data Structures:** `vector`, `queue`, `priority_queue`, `unordered_map`
 
 ## ⚡ Quick Preview
 

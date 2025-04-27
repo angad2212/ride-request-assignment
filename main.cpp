@@ -1,18 +1,15 @@
 //main
 #include<iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int sum(int a, int b){
-    int result = 0;
-    for(int i = a; i <= b; i++){
-        result += i;
-    }
-    return result;
-}
+int main() {
+    int a, b;
+    cout << "Enter two numbers: ";
+    cin >> a >> b;
 
-int main(){
-    int x = 1;
-    int y = 4;
-    int ans = sum(x,y);
-    cout << ans;
+    int sum = a + b;
+    cout << "Sum is: " << sum << endl;
+
+    return 0;
 }

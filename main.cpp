@@ -33,7 +33,7 @@ struct RideRequest {
     string scheduledTime; // Format: "HH:MM"
 
     RideRequest(Rider rider, string scheduledTime)
-        : rider(rider), scheduledTime(scheduledTime) {}
+        : rider(rider), scheduledTime(scheduledTime) {} //member initialiser
 };
 
 //  Helper Functions

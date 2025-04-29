@@ -1,15 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//  Structs and Classes
+//Structs and Classes
 
-// Represents a point/location (x, y)
+//a point/location (x, y)
 struct Point {
     double x, y;
     Point(double x = 0.0, double y = 0.0) : x(x), y(y) {}
 };
 
-// Represents a Driver
+//a Driver
 struct Driver {
     int id;
     Point location;
@@ -19,7 +19,7 @@ struct Driver {
         : id(id), location(location), speed(speed) {}
 };
 
-// Represents a Rider
+//a Rider
 struct Rider {
     int id;
     Point location;
@@ -27,7 +27,7 @@ struct Rider {
     Rider(int id, Point location) : id(id), location(location) {}
 };
 
-// Represents a Ride Request (for scheduling rides)
+//a Ride Request (for scheduling rides)
 struct RideRequest {
     Rider rider;
     string scheduledTime; // Format: "HH:MM"
@@ -36,42 +36,42 @@ struct RideRequest {
         : rider(rider), scheduledTime(scheduledTime) {} //member initialiser
 };
 
-//  Helper Functions
+//Helper Functions
 
-// Calculate Euclidean distance between two points
+//euclidean distance between two points
 double calculateDistance(Point a, Point b) {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
 
-// Calculate fare given distance
+//calculate fare
 double calculateFare(double distance) {
-    const double baseFare = 50.0; // Base Fare
-    const double farePerKm = 10.0; // Fare per km
+    const double baseFare = 50.0; 
+    const double farePerKm = 10.0; 
     return baseFare + (farePerKm * distance);
 }
 
-// Calculate ETA given distance and driver's speed
+//calculate ETA given distance and driver's speed
 double calculateETA(double distance, double speed) {
     if (speed == 0) return -1; // Avoid division by zero
     return distance / speed; // returns time in hours
 }
 
-//  Main Ride System Class
+//Main Ride System Class
 
 class RideSystem {
 private:
-    vector<Driver> drivers; // List of available drivers
-    queue<RideRequest> scheduledRides; // Queue for scheduled rides
-    unordered_map<int, vector<Point>> driverRoutes; // Driver ID -> list of waypoints (route)
-    //hashmap
+    vector<Driver> drivers; //list of available drivers
+    queue<RideRequest> scheduledRides; //queue for scheduled rides
+    unordered_map<int, vector<Point>> driverRoutes; //driver ID -> list of waypoints (route)
+    //hashmap (key: value)
 
 public:
-    // Add a driver to the system
+    //ddd a driver to the system
     void addDriver(Driver driver) {
         drivers.push_back(driver);
     }
 
-    // View a driver's planned route
+    //view a driver's planned route
     void viewDriverRoute(int driverId) {
         if (driverRoutes.find(driverId) == driverRoutes.end()) {
             cout << "No routes found for Driver ID " << driverId << ".\n";
@@ -84,21 +84,21 @@ public:
         cout << "END\n";
     }
 
-    // Schedule a future ride
+    //schedule a future ride
     void scheduleRide(Rider rider, string scheduledTime) {
         RideRequest request(rider, scheduledTime);
         scheduledRides.push(request);
         cout << "Ride scheduled for Rider ID " << rider.id << " at " << scheduledTime << ".\n";
     }
 
-    // Assign the nearest driver to a rider
-    // Dijkstra Algorithm with a greedy approach 
+    //assign the nearest driver to a rider
+    //Dijkstra approach with a greedy algo 
     Driver findNearestDriver(Rider rider) {
       if (drivers.empty()) {
           throw runtime_error("No drivers available!");
       }
 
-      // Min-Heap based on distance
+      //min-Heap based on distance
       priority_queue<pair<double, int>, vector<pair<double, int>>, greater<pair<double, int>>> pq;
 
       for (auto& driver : drivers) {
@@ -108,33 +108,33 @@ public:
 
       int nearestDriverId = pq.top().second;
 
-      // Find and return the driver object
+      //find and return the driver object
       for (auto& driver : drivers) {
           if (driver.id == nearestDriverId) {
               return driver;
           }
       }
 
-      // If somehow not found (should not happen)
+      //if somehow not found (should not happen)
       throw runtime_error("Nearest driver not found!");
     }
 
 
-    // Handle immediate ride request (assign driver, calculate fare and ETA)
+    //handle immediate ride request (assign driver, calculate fare and ETA and stuff)
     void assignRide(Rider rider) {
         try {
             Driver nearestDriver = findNearestDriver(rider);
             double distance = calculateDistance(nearestDriver.location, rider.location);
             double fare = calculateFare(distance);
             double etaHours = calculateETA(distance, nearestDriver.speed);
-            double etaMinutes = etaHours * 60; // Convert hours to minutes
+            double etaMinutes = etaHours * 60; 
 
-            cout << "Assigned Driver ID: " << nearestDriver.id << "\n";
-            cout << "Distance to Rider: " << distance << " km\n";
-            cout << "Estimated Fare: $" << fare << "\n";
-            cout << "Estimated Time of Arrival: " << etaMinutes << " minutes\n";
+            cout << "Assigned Driver ID: " << nearestDriver.id << endl;
+            cout << "Distance to Rider: " << distance << " km" << endl;
+            cout << "Estimated Fare: $" << fare << endl;
+            cout << "Estimated Time of Arrival: " << etaMinutes << " minutes" << endl;
 
-            // Update driver location to rider location after assignment (simulating pickup)
+            //update driver location to rider location after assigned
             for (auto& driver : drivers) {
                 if (driver.id == nearestDriver.id) {
                     driver.location = rider.location;
@@ -146,9 +146,9 @@ public:
         }
     }
 
-    // Process all scheduled rides
+    //process all scheduled rides
     void processScheduledRides() {
-        cout << "\nProcessing Scheduled Rides...\n";
+        cout << "Processing Scheduled Rides" << endl;
         while (!scheduledRides.empty()) {
             RideRequest req = scheduledRides.front();
             scheduledRides.pop();
@@ -158,45 +158,45 @@ public:
         }
     }
 
-    // Simulate adding a route for a driver
+    //adding a route for a driver
     void addRouteToDriver(int driverId, vector<Point> route) {
         driverRoutes[driverId] = route;
     }
 };
 
-//  Main Simulation
+//Main Simulation
 
 int main() {
     RideSystem system;
 
-    // Adding some drivers
+    //adding some drivers
     system.addDriver(Driver(1, Point(0, 0), 40)); // Driver 1 at (0, 0) with speed 40
     system.addDriver(Driver(2, Point(5, 5), 50)); // Driver 2 at (5,5) with speed 50
     system.addDriver(Driver(3, Point(10, -3), 60)); // Driver 3 at (10,-3) with speed 60
 
-    // Simulate Driver Routes
+    //simulate Driver Routes
     system.addRouteToDriver(1, {Point(0,0), Point(2,2), Point(4,4)}); //hashmap: key-> 1: value: (0,0) (2,2) (4,4)
     system.addRouteToDriver(2, {Point(5,5), Point(6,7)});
     
-    // Adding a rider
+    //sdding a rider
     Rider rider1(1001, Point(1, 1)); // Rider id 1001 at position 1,1
 
-    cout << "\n--- Immediate Ride Request ---\n";
+    cout << "Immediate Ride Request" << endl;
     system.assignRide(rider1); //akarsh has been assigned with angad
 
-    // Scheduling future rides
+    //scheduling future rides
     Rider rider2(1002, Point(7, 8));
     Rider rider3(1003, Point(2, 2));
 
     system.scheduleRide(rider2, "17:30");
     system.scheduleRide(rider3, "18:15");
 
-    // View Driver Route
-    cout << "\n--- Driver Routes ---\n";
+    //view Driver Route
+    cout << "Driver Routes" << endl;
     system.viewDriverRoute(1);
     system.viewDriverRoute(2);
 
-    // Process all scheduled rides
+    //process all scheduled rides
     system.processScheduledRides();
 
     return 0;

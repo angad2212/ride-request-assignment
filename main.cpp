@@ -63,6 +63,7 @@ private:
     vector<Driver> drivers; // List of available drivers
     queue<RideRequest> scheduledRides; // Queue for scheduled rides
     unordered_map<int, vector<Point>> driverRoutes; // Driver ID -> list of waypoints (route)
+    //hashmap
 
 public:
     // Add a driver to the system
@@ -91,6 +92,7 @@ public:
     }
 
     // Assign the nearest driver to a rider
+    // Dijkstra Algorithm with a greedy approach 
     Driver findNearestDriver(Rider rider) {
       if (drivers.empty()) {
           throw runtime_error("No drivers available!");
@@ -173,14 +175,14 @@ int main() {
     system.addDriver(Driver(3, Point(10, -3), 60)); // Driver 3 at (10,-3) with speed 60
 
     // Simulate Driver Routes
-    system.addRouteToDriver(1, {Point(0,0), Point(2,2), Point(4,4)});
+    system.addRouteToDriver(1, {Point(0,0), Point(2,2), Point(4,4)}); //hashmap: key-> 1: value: (0,0) (2,2) (4,4)
     system.addRouteToDriver(2, {Point(5,5), Point(6,7)});
     
     // Adding a rider
-    Rider rider1(1001, Point(1, 1)); // Rider id 1001
+    Rider rider1(1001, Point(1, 1)); // Rider id 1001 at position 1,1
 
     cout << "\n--- Immediate Ride Request ---\n";
-    system.assignRide(rider1);
+    system.assignRide(rider1); //akarsh has been assigned with angad
 
     // Scheduling future rides
     Rider rider2(1002, Point(7, 8));
